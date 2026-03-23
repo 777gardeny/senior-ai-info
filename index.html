@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시니어 AI 전문가 과정</title>
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}
+    (window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '2064515254114114'); // ← 반드시 수정
+    fbq('track', 'PageView');
+  </script>
+
+  <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2064515254114114&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      font-family: sans-serif;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .landing-image {
+      width: 100%;
+      display: block;
+    }
+
+    .cta-button {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 500px;
+      padding: 18px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #ff3b30;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- 이미지 (여기에 본인 이미지 파일명 넣기) -->
+    <img src="landing.png" alt="시니어 AI 전문가 과정" class="landing-image">
+  </div>
+
+  <!-- 신청 버튼 -->
+  <button class="cta-button" onclick="goToForm()">
+    👉 지금 무료 신청하기
+  </button>
+
+  <script>
+    function goToForm() {
+      // Lead 이벤트 전송
+      fbq('track', 'Lead');
+
+      // 구글폼으로 이동 (여기 수정)
+      window.location.href = "https://forms.gle/iZejzs6fccxeGRNT8";
+    }
+  </script>
+
+</body>
+</html>
