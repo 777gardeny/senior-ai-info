@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>시니어 AI 전문가 과정</title>
 
-  <!-- [1] Meta Pixel Code -->
   <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -26,20 +25,11 @@
     src="https://www.facebook.com/tr?id=2064515254114114&ev=PageView&noscript=1"/>
   </noscript>
 
-  <!-- [2] Danggeun Market Pixel Code -->
+  <script src="https://karrot-pixel.business.daangn.com/karrot-pixel.js"></script>
   <script>
-    (function(a, b, c, d, e) {
-      a[e] = a[e] || function() {
-        (a[e].q = a[e].q || []).push(arguments);
-      };
-      var f = b.createElement(c);
-      var g = b.getElementsByTagName(c)[0];
-      f.async = 1; f.src = d;
-      g.parentNode.insertBefore(f, g);
-    })(window, document, 'script', 'https://static.daangn.com/pixels/latest.js', 'karrotPixel');
-
-    karrotPixel('init', '1777342301226414001'); // 발급받으신 당근 픽셀 ID 적용
-    karrotPixel('track', 'ViewContent'); // 페이지 방문 추적
+    // 1. 초기화 및 기본 방문 수집 (ID: 1777342301226414001)
+    window.karrotPixel.init('1777342301226414001');
+    window.karrotPixel.track('ViewPage');
   </script>
 
   <style>
@@ -81,24 +71,26 @@
 <body>
 
   <div class="container">
-    <!-- 이미지 파일명이 landing.png인지 확인하세요 -->
     <img src="landing.png" alt="시니어 AI 전문가 과정" class="landing-image">
   </div>
 
-  <!-- 신청 버튼 -->
   <button class="cta-button" onclick="goToForm()">
     👉 지금 교육 신청하기
   </button>
 
   <script>
     function goToForm() {
-      // 1. Meta Lead 이벤트 전송
-      fbq('track', 'Lead');
+      // 1. 메타 픽셀 (Lead)
+      if (typeof fbq === 'function') {
+        fbq('track', 'Lead');
+      }
 
-      // 2. 당근 SubmitApplication 이벤트 전송 (광고 최적화 핵심)
-      karrotPixel('track', 'Purchase');
+      // 2. 당근 픽셀 (Purchase) - 표준 호출 방식으로 변경
+      if (window.karrotPixel) {
+        window.karrotPixel.track('Purchase');
+      }
 
-      // 3. 구글폼 이동 (데이터 전송을 보장하기 위해 0.3초 지연)
+      // 3. 구글폼 이동 (데이터 전송을 위해 0.3초 지연)
       setTimeout(function() {
         window.location.href = "https://forms.gle/nm6sCgeVkUaaRrU47";
       }, 300);
