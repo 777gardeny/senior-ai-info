@@ -92,6 +92,43 @@
       background-color: #ff3b30;
       color: white;
     }
+
+    /* [추가] 실시간 마케팅 알림 팝업 스타일 */
+    .custom-toast {
+      position: fixed;
+      bottom: 95px; /* 하단 고정 버튼 바 바로 위에 띄움 */
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      width: calc(100% - 30px);
+      max-width: 570px;
+      background-color: rgba(30, 30, 30, 0.95); /* 가독성 높은 다크 테마 */
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none; /* 유저의 이미지 클릭/스크롤 방해 금지 */
+      box-sizing: border-box;
+    }
+
+    /* 팝업이 활성화되었을 때 위로 부드럽게 올라오는 효과 */
+    .custom-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 침침한 눈에도 확 띄는 숫자 강조 색상 선별 */
+    .toast-num-course {
+      color: #ff453a; /* 전문가 과정 핵심 포인트 컬러 (레드) */
+    }
+    .toast-num-seminar {
+      color: #ff9f0a; /* 무료 설명회 핵심 포인트 컬러 (오렌지) */
+    }
   </style>
 </head>
 
@@ -100,6 +137,9 @@
   <div class="container">
     <img src="landing.png" alt="시니어 AI 전문가 과정" class="landing-image">
   </div>
+
+  <!-- [추가] 자바스크립트가 제어할 팝업 레이어 위치 -->
+  <div id="toastPopup" class="custom-toast"></div>
 
   <div class="cta-container">
     <button class="cta-button btn-seminar" onclick="trackAndGo('seminar')">
@@ -111,36 +151,76 @@
   </div>
 
   <script>
+    // 기존 페이지 이동 및 트래킹 함수
     function trackAndGo(type) {
       var targetUrl = "";
       
       if (type === 'seminar') {
         targetUrl = "https://forms.gle/9UZFo1bJsMavL9GP7";
-        // 메타 맞춤 전환 전송용 (URL 파라미터 포함)
         if (typeof fbq === 'function') {
           fbq('track', 'Lead', { content_name: 'Seminar' });
         }
-        // 당근 구매 이벤트
         if (window.karrotPixel) {
           window.karrotPixel.track('Purchase');
         }
       } else {
         targetUrl = "https://forms.gle/Gaco6JSJsXDHT85k7";
-        // 메타 맞춤 전환 전송용
         if (typeof fbq === 'function') {
           fbq('track', 'Purchase', { content_name: 'Course' });
         }
-        // 당근 구매 이벤트
         if (window.karrotPixel) {
           window.karrotPixel.track('Purchase');
         }
       }
 
-      // 데이터 전송 누락 방지를 위한 지연 이동
       setTimeout(function() {
         window.location.href = targetUrl;
       }, 300);
     }
+
+    // [추가] 시니어 심리 자극형 조건부 로테이션 알림 로직
+    document.addEventListener("DOMContentLoaded", function() {
+      var currentHour = new Date().getHours();
+      
+      // 기획하신 엄격한 인원 제한 기본값 세팅
+      var finalCourseCount = 1;  // 전문가 과정 (최소 1)
+      var finalSeminarCount = 2; // 무료 설명회 (최소 2)
+
+      // 시간대별 흐름 분배 (새로고침 시 숫자가 낮아지는 배신감 방지)
+      if (currentHour >= 12 && currentHour < 17) {
+        // 오후 시간대 (12시 ~ 17시 전)
+        finalCourseCount = 1;
+        finalSeminarCount = 3;
+      } else if (currentHour >= 17) {
+        // 저녁 및 밤 시간대 (17시 이후 최고치 도달)
+        finalCourseCount = 2;  // 최대 2명 제한
+        finalSeminarCount = 4; // 최대 4명 제한
+      }
+
+      var toast = document.getElementById("toastPopup");
+
+      // [1단계] 페이지 진입 3초 후: 가장 중요한 '전문가 과정' 팝업 먼저 노출
+      setTimeout(function() {
+        toast.innerHTML = "오늘 전문가 과정 <span class='toast-num-course'>" + finalCourseCount + "명</span> 신청 완료! 🎉";
+        toast.classList.add("show");
+      }, 3000);
+
+      // [2단계] 진입 6.5초 후: 첫 번째 팝업 부드럽게 제거 (3.5초간 노출됨)
+      setTimeout(function() {
+        toast.classList.remove("show");
+      }, 6500);
+
+      // [3단계] 진입 8.5초 후: 허들을 낮춰줄 '무료 설명회' 팝업 순차 노출 (2초 공백기 부여)
+      setTimeout(function() {
+        toast.innerHTML = "오늘 무료 설명회 <span class='toast-num-seminar'>" + finalSeminarCount + "명</span> 신청 완료! 👍";
+        toast.classList.add("show");
+      }, 8500);
+
+      // [4단계] 진입 12초 후: 두 번째 팝업 최종 제거 (3.5초간 노출됨)
+      setTimeout(function() {
+        toast.classList.remove("show");
+      }, 12000);
+    });
   </script>
 
 </body>
