@@ -143,7 +143,7 @@
 
   <div class="cta-container">
     <button class="cta-button btn-seminar" onclick="trackAndGo('seminar')">
-      무료 설명회 신청
+      무료 AI 교육 신청
     </button>
     <button class="cta-button btn-course" onclick="trackAndGo('course')">
       전문가 과정 신청
@@ -156,7 +156,7 @@
       var targetUrl = "";
       
       if (type === 'seminar') {
-        targetUrl = "https://forms.gle/4q4F6EEsv4YAxda1A";
+        targetUrl = "https://naver.me/FriPtGvz";
         if (typeof fbq === 'function') {
           fbq('track', 'Lead', { content_name: 'Seminar' });
         }
@@ -164,7 +164,7 @@
           window.karrotPixel.track('Purchase');
         }
       } else {
-        targetUrl = "https://forms.gle/vu85TTQce88is5k29";
+        targetUrl = "https://forms.gle/9J6jCCrdsWFsGN1L6";
         if (typeof fbq === 'function') {
           fbq('track', 'Purchase', { content_name: 'Course' });
         }
